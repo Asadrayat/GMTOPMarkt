@@ -1,0 +1,339 @@
+{% assign id = section.id %}
+<style>
+    #shopify-section-{{ id }} {
+     margin-top: {{ section.settings.margin_top }}px;
+     margin-bottom: {{ section.settings.margin_bottom }}px;
+     padding-top: {{ section.settings.padding_top }}px;
+     padding-bottom: {{ section.settings.padding_bottom }}px;
+      h2 {
+        margin: 0 0 8px 0;
+        text-align: center;
+        /* text-transform: capitalize; */
+      }
+      .pre__title-rating {
+          justify-content: center;
+          display: flex;
+        gap: 8px;
+          p {
+            margin: 0;
+          }
+      }
+      em {
+        font-style: normal;
+        display: block;
+      }
+      .user {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+      }
+    }
+    .heading-{{ id }} {
+      margin-bottom: 48px;
+      @media(max-width: 768px ) {
+        margin-bottom: 32px;
+      }
+    }
+    .wrapper-{{ id }} .block{
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      align-items: center;
+      height: 100%;
+       @media(max-width: 768px){
+         gap: 8px;
+         /* display: grid;
+         grid-template-columns: 0.8fr 1fr; */
+       }
+      video{
+        display: flex;
+        /* max-width: 240px; */
+        width: 100%;
+        height: auto;
+        /* padding: var(--Spacing-Container-xs, 12px); */
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-end;
+        gap: var(--Spacing-Container-sm, 16px);
+        border-radius: 0;
+        /* background: url(<path-to-image>) lightgray 50% / cover no-repeat; */
+        @media(max-width: 768px){
+          /* aspect-ratio: 0.67;
+         */
+           max-width: 100%;
+        }
+      }
+      .info{
+        display: flex;
+        padding: 0;
+        flex-direction: column;
+        gap: 0;
+        border: none;
+        align-items: start;
+        width: 100%;
+        @media(max-width: 768px){
+          padding: 16px;
+        }
+        h3{
+          margin: 12px 0  0 0;
+          color: var(--Content-Base-main, #1F2937);
+
+          /* Headings/H6 */
+          font-family: var(--font-family-Heading, Gotham);
+          font-size: var(--Font-Size-Heading-H6, 20px);
+          font-style: normal;
+          font-weight: 500;
+          line-height: var(--Line-Height-Heading-H6, 24px); /* 120% */
+          letter-spacing: -0.4px;
+          @media(max-width: 768px){
+            font-size: 14px;
+          }
+        }
+        .desc{
+          /* overflow: hidden; */
+          color: var(--Content-Base-main, #1F2937);
+          /* text-overflow: ellipsis; */
+          font-family: var(--font-family-Body, Esteban);
+          font-size: var(--Font-Size-Paragraph-Small, 14px);
+          font-style: normal;
+          font-weight: 400;
+          line-height: var(--Line-Height-Paragraph-Small, 20px);
+          letter-spacing: 0.28px;
+          margin: 8px 0 12px;
+          @media(max-width: 768px){
+            font-size: 12px;
+            margin: 6px 0;
+          }
+          p{
+            margin: 0;
+          }
+        }
+        img {
+          max-width: 110px;
+          height: auto;
+          width: 100%;
+        }
+      }
+    }
+  @media screen and (max-width: 890px){
+     #shopify-section-{{ id }} {
+       margin-top: {{ section.settings.margin_top-m }}px;
+       margin-bottom: {{ section.settings.margin_bottom-m }}px;
+       padding-top: {{ section.settings.padding_top-m }}px;
+       padding-bottom: {{ section.settings.padding_bottom-m }}px;
+      em {
+        font-style: normal;
+        display: unset;
+      }
+    }
+  }
+</style>
+<section class="{% unless section.settings.full_width %}page-width{% endunless %}">
+  <div class="container-{{ id }}">
+    <div class="heading-{{ id }}">
+      <h2 class="h2">{{ section.settings.title }}</h2>
+      <div class="pre__title-rating">
+        {% if section.settings.rating -%}
+          {{- section.settings.rating | image_url: width: '108x' | image_tag -}}
+        {%- endif %}
+        {% if section.settings.rating_text != blank %}
+          <p class="pretitle ">
+            {{ section.settings.rating_text | escape }}
+          </p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="wrapper-{{ id }}">
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            <div class="block swiper-slide">
+              {% if block.settings.video %}
+                {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: true }}
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function(){
+    var swiper = new Swiper(".wrapper-{{ id }} .swiper", {
+      slidesPerView: 2.9 ,
+      spaceBetween: 16,
+      loop: true,
+      effect: "Cards",
+      autiHeight: true,
+      resizeReInit: true,
+      autoplay: true,
+      autoplay: {
+        delay:  5000,
+        disableOnInteraction: false,
+      },
+      breakpoints: {
+        300: {
+          slidesPerView: 1.2,
+          spaceBetween: 12,
+        },
+        640: {
+          slidesPerView: 2.1,
+          spaceBetween: 16,
+        },
+        768: {
+          slidesPerView: 2.3,
+          spaceBetween: 16,
+        },
+        1250: {
+          slidesPerView: 2.8           ,
+          spaceBetween: 16,
+        },
+        1400: {
+          slidesPerView: 3.2,
+          spaceBetween: 24,
+        },
+      },
+    });
+  })
+</script>
+
+<script>
+ function setEqualHeight(selector){
+      const divs = document.querySelectorAll(selector);
+      const maxHeight = Math.max(...Array.from(divs, div => div.offsetHeight));
+      divs.forEach(div => {
+        div.style.height = `${maxHeight}px`;
+      });
+    };
+  document.addEventListener('DOMContentLoaded', () => {
+    setEqualHeight('.wrapper-{{ id }} .desc_');
+  });
+</script>
+
+{% schema %}
+{
+  "name": "New Video Slider",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "Mamas and their babies love Milk by Mom!"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Spacing (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "margin_top-m",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Margin Top (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom-m",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Margin Bottom (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top-m",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top  (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom-m",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom  (Mobile)",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "block",
+      "name": "Block",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video"
+        },
+      ]
+    }
+  ],
+  "presets":[
+    {
+      "name": "New Video Slider"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,280 @@
+<style>
+  .content--{{ section.id }} {
+    flex: 1;
+    padding-right: 20px;
+    color: white;
+    min-width: 300px;
+    @media(max-width: 768px) {
+      padding-right: 0;
+    }
+  }
+  .containe-{{ section.id }} {
+    /* padding-block: 64px; */
+    background-color: #0072b8;
+    /* border-radius: 10px; */
+    margin-block: 64px;
+      @media(max-width: 768px ) {
+        margin-block: 32px;
+      }
+    .page-width {
+          display: flex;
+    justify-content: space-between;
+          flex-wrap: wrap;
+    align-items: center;
+      padding-block: 64px;
+      @media(max-width: 768px) {
+        padding-block: 32px;
+      }
+    }
+    a.map__Wrapper {
+        box-sizing: border-box;
+        flex: 0 0 50%;
+        border-width: 4px;
+        border-style: solid;
+        border-color: #c20000;
+        border-image: initial;
+      @media(max-width: 768px ) {
+        margin: 20px 0 0;
+        flex: 0 0 100%;
+      }
+    }
+  }
+</style>
+
+<!-- Store Hours and Contact Info Section -->
+<div class="containe-{{ section.id }} ">
+  <div class="page-width">
+    <!-- Store Hours Section -->
+    <div class="content--{{ section.id }}">
+      <h2 style="font-size: 24px; font-weight: 700; text-transform: capitalize; text-align: center; margin-bottom: 20px;">
+        {{ section.settings.title }}
+      </h2>
+      <div id="store-hours" style="display: flex; flex-wrap: wrap; justify-content: space-between;gap: 16px;"></div>
+    </div>
+    {% if section.settings.img %}
+      <a class="map__Wrapper" href="https://www.google.com/maps?q={{ section.settings.map_address | url_encode }}">
+        {{ section.settings.img | image_url: width: '1050x' | image_tag }}
+      </a>
+    {% endif %}
+    <!-- Contact Info Section -->
+    {% comment %}
+       <div style="flex: 1; padding-left: 20px; color: white; min-width: 300px; margin-top: 0px; text-align: center;">
+        <h2 style="font-size: 24px; font-weight: 700; text-transform: capitalize; text-align: center; margin-bottom: 40px;">
+          Haben Sie Fragen?
+        </h2>
+
+        <!-- Email -->
+        <div style="display: flex; align-items: center; margin-bottom: 15px; justify-content: center; flex-wrap: wrap;">
+          <img
+            width="30"
+            height="40"
+            src="https://img.icons8.com/ios-filled/50/FA5252/new-post.png"
+            alt="new-post"
+            style="margin-right: 10px; flex-shrink: 0;"
+          >
+          <span style="font-size: 18px;">eshop@griechische-foods.online</span>
+        </div>
+
+        <!-- Address -->
+        <div style="display: flex; align-items: center; margin-bottom: 15px; justify-content: center; flex-wrap: wrap;">
+          <img
+            width="30"
+            height="40"
+            src="https://img.icons8.com/ios-filled/50/FA5252/marker.png"
+            alt="location"
+            style="margin-right: 10px; flex-shrink: 0;"
+          >
+          <span style="font-size: 18px;">Philippsring 7, 55252 Mainz-Kastel</span>
+        </div>
+
+        <!-- Telephone -->
+        <div style="display: flex; align-items: center; margin-bottom: 15px; justify-content: center; flex-wrap: wrap;">
+          <img
+            width="30"
+            height="30"
+            src="https://img.icons8.com/ios-filled/50/FA5252/phone.png"
+            alt="phone"
+            style="margin-right: 10px; flex-shrink: 0;"
+          >
+          <span style="font-size: 18px;">+49 (0) 6134 2965682</span>
+        </div>
+      </div>
+    {% endcomment %}
+  </div>
+</div>
+
+<!-- Styles -->
+<style>
+  .day-block {
+      flex: 1 1 45%;
+      text-align: center;
+      margin-bottom: 20px;
+      padding: 14px;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+  }
+
+  /* Active Day Styling (Today) */
+  .highlight-today {
+    background-color: #ffffff;
+    color: #167ac6;
+    font-weight: 700;
+    border: 1px solid rgba(27,127,204,.8);
+  }
+
+  /* Inactive Days */
+  .day-block:not(.highlight-today) {
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #fff;
+    font-weight: 400;
+  }
+
+  .open {
+    color: #167ac6;
+    font-weight: bold;
+  }
+
+  .closed {
+      color: #ff6666;
+      font-weight: bold;
+  }
+
+  @media (max-width: 768px) {
+      .day-block {
+        padding: 5px;
+        font-size: 14px;
+        margin-bottom: 0px !important;
+      }
+  }
+</style>
+
+<!-- JavaScript -->
+<script>
+    const storeHoursData = [
+        { day: '{{ section.settings.day1 }}', hours: '09:00 - 19:30', closed: false },
+        { day: '{{ section.settings.day2 }}', hours: '09:00 - 19:30', closed: false },
+        { day: '{{ section.settings.day3 }}', hours: '09:00 - 15:00', closed: false },
+        { day: '{{ section.settings.day4 }}', hours: '09:00 - 19:30', closed: false },
+        { day: '{{ section.settings.day5 }}', hours: '09:00 - 19:30', closed: false },
+        { day: '{{ section.settings.day6 }}', hours: '09:00 - 17:00', closed: false },
+        { day: '{{ section.settings.day7 }}', hours: '', closed: true }
+        // { day: 'Montag', hours: '09:00 - 19:30', closed: false },
+        // { day: 'Dienstag', hours: '09:00 - 19:30', closed: false },
+        // { day: 'Mittwoch', hours: '09:00 - 15:00', closed: false },
+        // { day: 'Donnerstag', hours: '09:00 - 19:30', closed: false },
+        // { day: 'Freitag', hours: '09:00 - 19:30', closed: false },
+        // { day: 'Samstag', hours: '09:00 - 17:00', closed: false },
+        // { day: 'Sonntag', hours: '', closed: true }
+    ];
+
+    // Get current date in German timezone
+    const berlinDate = new Date().toLocaleString("en-US", { timeZone: "Europe/Berlin" });
+    const today = new Date(berlinDate);
+    const jsDay = today.getDay(); // 0 (Sunday) to 6 (Saturday)
+    const germanDayIndex = jsDay === 0 ? 6 : jsDay - 1; // Adjust to match German day order
+
+    const container = document.getElementById("store-hours");
+    let html = "";
+
+    storeHoursData.forEach((entry, index) => {
+        const isToday = index === germanDayIndex;
+        const status = entry.closed ? `<span class="closed">{{ section.settings.close }}</span>` : `<span class="open">{{ section.settings.open }}</span>`;
+        const highlightClass = isToday ? 'highlight-today' : '';
+        const hoursText = entry.closed ? '' : entry.hours;
+
+        html += `
+            <div class="day-block ${highlightClass}">
+                <strong>${entry.day}</strong><br>
+                ${hoursText}
+                ${isToday ? status : ''}
+            </div>
+        `;
+    });
+
+    container.innerHTML = html;
+</script>
+
+{% schema %}
+{
+  "name": "Custom Hours",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "img",
+      "label": "Map Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Öffnungszeiten"
+    },
+    {
+      "type": "text",
+      "id": "map_address",
+      "label": "Address Map"
+    },
+    {
+      "type": "text",
+      "id": "close",
+      "label": "Close Text",
+      "default": "Geschlossen"
+    },
+    {
+      "type": "text",
+      "id": "open",
+      "label": "Open Text",
+      "default": "Geschlossen"
+    },
+    {
+      "type": "text",
+      "id": "day1",
+      "label": "Day1",
+      "default": "Montag"
+    },
+    {
+      "type": "text",
+      "id": "day2",
+      "label": "Day2",
+      "default": "Dienstag"
+    },
+    {
+      "type": "text",
+      "id": "day3",
+      "label": "Day3",
+      "default": "Mittwoch"
+    },
+    {
+      "type": "text",
+      "id": "day4",
+      "label": "Day4",
+      "default": "Donnerstag"
+    },
+    {
+      "type": "text",
+      "id": "day5",
+      "label": "Day5",
+      "default": "Freitag"
+    },
+    {
+      "type": "text",
+      "id": "day6",
+      "label": "Day6",
+      "default": "Samstag"
+    },
+    {
+      "type": "text",
+      "id": "day7",
+      "label": "Day7",
+      "default": "Sonntag"
+    },
+  ],
+  "presets": [
+    {
+      "name": "Custom Hours"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,214 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+  #shopify-section-{{id}} {
+    box-sizing: border-box;
+    margin-top: {{section.settings.margin_top | append: 'px'}};
+    margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+    padding-top: {{section.settings.padding_top | append: 'px'}};
+    padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+    background: #0472ba;
+  }
+  .wrapper-{{ id }} img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  .wrapper-{{ id }} h2, .wrapper-{{ id }} p{
+    color: #fff;
+    @media(max-width: 768px) {
+      text-align: center;
+    }
+  }
+  .wrapper-{{ id }} {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    @media(max-width: 768px) {
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 24px;
+    }
+    .info__wrapp {
+      max-width: 500px;
+      p {
+        font-size: 24px;
+        line-height: 150%;
+        @media(max-width: 768px) {
+          font-size: 18px;
+          text-align: center;
+        }
+      }
+      img {
+        max-width: 250px;
+       @media(max-width: 768px) {
+          margin: auto;
+          max-width: 150px;
+        }
+      }
+    }
+  }
+  @media(max-width: 600px) {
+    #shopify-section-{{id}} {
+      margin-top: {{section.settings.margin_top_m | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+      padding-top: {{section.settings.padding_top_m | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+    }
+  }
+</style>
+
+<div class="sec-{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="wrapper-{{ id }}">
+      <div class="info__wrapp">
+        <h2>{{ section.settings.title }}</h2>
+        <p>{{ section.settings.desc }}</p>
+        <a href="{{ settings.app_url }}">
+          {{- section.settings.play__btn | image_url: width: section.settings.play__btn.width | image_tag -}}
+        </a>
+      </div>
+      <div class="image__wrap">
+        {% if section.settings.image -%}
+          {{- section.settings.image | image_url: width: section.settings.image.width | image_tag -}}
+        {%- endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Image Banner",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Shop with easy with Our GM APP"
+    },
+    {
+      "type": "text",
+      "id": "desc",
+      "label": "Descriprion",
+      "default": "Manage your cart casily Reduce or add quantity of an item Easily address and delivery method"
+    },
+    {
+      "type": "image_picker",
+      "id": "play__btn",
+      "label": "App Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "Link To Image"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image Banner"
+    }
+  ]
+}
+{% endschema %}

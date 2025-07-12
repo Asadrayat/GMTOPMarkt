@@ -1,0 +1,405 @@
+{% assign id = section.id %}
+<style>
+    #shopify-section-{{ id }} {
+     padding-top: {{ section.settings.padding_top }}px;
+     padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  @media screen and (max-width: 890px){
+     #shopify-section-{{ id }} {
+       padding-top: {{ section.settings.padding_top-m }}px;
+       padding-bottom: {{ section.settings.padding_bottom-m }}px;
+    }
+  }
+    .video-section  {
+      position: relative;
+    }
+    .video-section .video-wrap{
+      width: 100%;
+      max-height: 100vh;
+    }
+    .video-section .video-wrap video{
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      max-height: calc(100vh + {{ section.settings.v_height | append: "px" }});
+      @media(max-width: 768px) {
+        aspect-ratio: 9 / 11;
+      }
+    }
+  .section-container--{{ section.id }}{
+    position: relative;
+    .content-container{
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      display: flex;
+      transform: translateX(-50%);
+      padding-block: 40px;
+     {% if section.settings.alignment == 'top_left' %}
+       justify-content: start;
+       align-items: start;
+     {% elsif section.settings.alignment == 'top_center' %}
+       justify-content: center;
+       align-items: start;
+     {% elsif section.settings.alignment == 'top_right' %}
+       justify-content: end;
+       align-items: start;
+     {% elsif section.settings.alignment == 'middle_left' %}
+       justify-content: start;
+       align-items: center;
+     {% elsif section.settings.alignment == 'middle_center' %}
+       justify-content: center;
+       align-items: center;
+     {% elsif section.settings.alignment == 'middle_right' %}
+       justify-content: end;
+       align-items: center;
+     {% elsif section.settings.alignment == 'bottom_left' %}
+       justify-content: start;
+       align-items: end;
+     {% elsif section.settings.alignment == 'bottom_center' %}
+       justify-content: center;
+       align-items: end;
+     {% else %}
+       justify-content: end;
+       align-items: end;
+     {% endif %}
+      @media screen and (max-width: 768px){
+        justify-content: center;
+        {% if section.settings.mobile_alignment == 'top' %}
+          align-items: start;
+        {% elsif section.settings.mobile_alignment == 'middle' %}
+          align-items: center;
+        {% elsif section.settings.mobile_alignment == 'bottom' %}
+          align-items: end;
+        {% endif %}
+      }
+    }
+    .content-wrapper{
+      max-width: fit-content;
+      /* padding: 20px; */
+      display: flex;
+      flex-direction: column;
+      {% if section.settings.content_alignment == 'left' %}
+        align-items: start;
+        text-align: left;
+      {% elsif section.settings.content_alignment == 'center' %}
+        align-items: center;
+        text-align: center;
+      {% elsif section.settings.content_alignment == 'right' %}
+        align-items: end;
+        text-align: right;
+      {% endif %}
+      @media screen and (max-width: 768px){
+
+      }
+    }
+    .title{
+      color: #FFF;
+      {% if section.settings.title_size == 'medium' %}
+        font-size: 20px;
+      {% elsif section.settings.title_size == 'large' %}
+        font-size: 40px;
+      {% elsif section.settings.title_size == 'xlarge' %}
+        font-size: 80px;
+      {% endif %}
+      line-height: 100%;
+      text-transform: uppercase;
+      margin: 0 0 16px;
+
+      @media screen and (max-width: 768px){
+        font-size: 22px;
+        line-height: 26px;
+         margin: 0 0 12px;
+      }
+    }
+    .description{
+      color: #FFF;
+      /* font-size: 18px;
+      line-height: 1.2em;
+      letter-spacing: .2em; */
+      @media screen and (max-width: 768px){
+        /* font-size: 12px; */
+      }
+    }
+  }
+</style>
+<section class="section-container--{{ section.id }} {% unless section.settings.full_width %}page-width{% endunless %}">
+  <div class="video-section ">
+    {% if section.settings.video != blank %}
+      <span class="video-wrap {% if section.settings.video_m != blank %}desktop_only{% endif %}">
+        {{ section.settings.video | video_tag: autoplay: true, loop: true, controls: false, muted: true }}
+      </span>
+    {% else %}
+      <span class="video-wrap desktop_only">
+        <video
+          src="https://cdn.shopify.com/videos/c/o/v/fbb140fd46e3429eba459e1549dbbe38.mp4"
+          autoplay
+          muted
+          controls
+        ></video>
+      </span>
+    {% endif %}
+
+    {% if section.settings.video_m != blank %}
+      <span class="video-wrap mobile_only">
+        {{ section.settings.video_m | video_tag: autoplay: true, loop: true, controls: false, muted: true }}
+      </span>
+    {% endif %}
+
+    {% if section.settings.show_content %}
+      <div class="content-container page-width">
+        <div class="content-wrapper">
+          {% if section.settings.title != blank %}
+            <h3 class="title">{{ section.settings.title }}</h3>
+          {% endif %}
+          {% if section.settings.description != blank %}
+            <p class="description">{{ section.settings.description }}</p>
+          {% endif %}
+          {% if section.settings.label != blank %}
+            <a class="global_btn" href="{{ section.settings.url }}">{{ section.settings.label }}</a>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Video Section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width",
+      "default": true
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video"
+    },
+    {
+      "type": "video",
+      "id": "video_m",
+      "label": "Video (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "v_height",
+      "label": "Hight Respect To Viewport",
+      "min": -500,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "default": -150,
+      "info": "Note(Only Applicable For Desktop)"
+    },
+    {
+      "type": "header",
+      "content": "Text Content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_content",
+      "label": "Show Content",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "push the boundaries"
+    },
+    {
+      "type": "select",
+      "id": "title_size",
+      "label": "Title Size",
+      "options": [
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "xlarge",
+          "label": "Extra Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "TWL IS HERE FOR THE THE ONES WHO LIFT HEAVY, RUN FAST, AND PUSH HARDER EVERY SESSION."
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Button Label",
+      "default": "OUR STORY"
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Desktop Alignment"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "top_left",
+          "label": "Top Left"
+        },
+        {
+          "value": "top_center",
+          "label": "Top Center"
+        },
+        {
+          "value": "top_right",
+          "label": "Top Right"
+        },
+        {
+          "value": "middle_left",
+          "label": "Middle Left"
+        },
+        {
+          "value": "middle_center",
+          "label": "Middle Center"
+        },
+        {
+          "value": "middle_right",
+          "label": "Middle Right"
+        },
+        {
+          "value": "bottom_left",
+          "label": "Bottom Left"
+        },
+        {
+          "value": "bottom_center",
+          "label": "Bottom Center"
+        },
+        {
+          "value": "bottom_right",
+          "label": "Bottom Right"
+        }
+      ],
+      "default": "middle_center"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Alignment"
+    },
+    {
+      "type": "select",
+      "id": "mobile_alignment",
+      "label": "Mobile Alignment",
+      "options": [
+         {
+            "value": "top",
+            "label": "Top"
+          },
+          {
+            "value": "middle",
+            "label": "Middle"
+          },
+          {
+            "value": "bottom",
+            "label": "Bottom"
+          }
+        ],
+        "default": "middle"
+    },
+    {
+      "type": "header",
+      "content": "Content Alignment"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content Alignment",
+      "options": [
+         {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ],
+        "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Spacing (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top-m",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top  (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom-m",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom  (Mobile)",
+      "default": 0
+    }
+  ],
+  "presets":[
+    {
+      "name": "Video Section"
+    }
+  ]
+}
+{% endschema %}

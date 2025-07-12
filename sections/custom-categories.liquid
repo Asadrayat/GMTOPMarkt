@@ -1,0 +1,215 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+  #shopify-section-{{id}} {
+    box-sizing: border-box;
+    margin-top: {{section.settings.margin_top | append: 'px'}};
+    margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+    padding-top: {{section.settings.padding_top | append: 'px'}};
+    padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+  }
+  .wrapper-{{ id }} {
+    display: grid;
+    grid-template-columns: repeat(4 , 1fr);
+    gap: 32px;
+    @media(max-width: 1200px) {
+      grid-template-columns: repeat(3 , 1fr);
+      gap: 16px;
+    }
+    @media(max-width: 768px) {
+      grid-template-columns: repeat( auto-fit, minmax(150px, 1fr));
+    }
+    h3 {
+      text-align: center;
+      padding: 0 32px 16px;
+      color: #005bd3;
+      @media(max-width: 768px) {
+        padding: 0 8px 8px;
+        font-size: 16px;
+        /* margin: 0; */
+      }
+    }
+    .collection__card {
+      box-sizing: border-box;
+      box-shadow: 0 1px 4px #005bd3;
+      border-radius: 15px;
+    }
+    .image__wrapp {
+      padding: 32px;
+      @media(max-width: 768px) {
+        padding: 8px;
+      }      
+      img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+        object-fit: cover;
+      }
+    }
+  }
+  @media(max-width: 600px) {
+    #shopify-section-{{id}} {
+      margin-top: {{section.settings.margin_top_m | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+      padding-top: {{section.settings.padding_top_m | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+    }
+  }
+</style>
+
+<div class="sec-{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <h2 class="--section-title">{{ section.settings.title }}</h2>
+    <div class="wrapper-{{ id }}">
+      {% for block in section.blocks %}
+        {% assign collection = block.settings.collection %}
+        <a href="{{ collection.url }}" class="collection__card">
+          <div class="image__wrapp">
+            {% if block.settings.image -%}
+              {{- block.settings.image | image_url: width: block.settings.image.width | image_tag -}}
+            {%- elsif collection.image -%}
+              {{- collection.image | image_url: width: collection.image.width | image_tag -}}
+            {% else %}
+              {{ 'collection-1' | placeholder_svg_tag }}
+            {%- endif %}
+          </div>
+          <div class="info__wrapp">
+            <h3>{{ collection.title }}</h3>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Categories",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Categories"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,278 @@
+{%- liquid
+  assign show_selectors = false
+  assign currency_selector = false
+  assign locale_selector = false
+
+  if section.settings.show_currency_selector and shop.enabled_currencies.size > 1
+    assign currency_selector = true
+  endif
+
+  if section.settings.show_locale_selector and shop.enabled_locales.size > 1
+    assign locale_selector = true
+  endif
+
+  if currency_selector or locale_selector
+    assign show_selectors = true
+  endif
+-%}
+
+<div class="toolbar{% if overlay_header%} toolbar--transparent{% endif %} ">
+  <div class="page-width">
+    <div class="toolbar__content desktop_only">
+      {%- if section.settings.toolbar_social -%}
+        <div class="toolbar__item small--hide">
+          <p class="announce___text">
+            <svg
+              fill="#fff"
+              width="800px"
+              height="800px"
+              viewBox="0 0 24 24"
+              id="star"
+              data-name="Line Color"
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon line-color"
+            >
+              <polygon id="primary" points="12 4 9.22 9.27 3 10.11 7.5 14.21 6.44 20 12 17.27 17.56 20 16.5 14.21 21 10.11 14.78 9.27 12 4" style="fill: none; stroke: #fff; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polygon>
+            </svg>
+            <!-- 4.9 / 5.0 Top Rating -->
+            {{ settings.announce_1 }}
+          </p>
+          <p class="announce___text">
+            <svg
+              height="800px"
+              width="800px"
+              version="1.1"
+              id="_x32_"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              viewBox="0 0 512 512"
+              xml:space="preserve"
+            >
+              <style type="text/css">
+              	.st0{fill:#fff;}
+              </style>
+              <g>
+              	<path class="st0" d="M287.88,104.895v-70.23h-63.768v70.23c0,23.803-74.99,48.802-74.99,114.274c0,20.24,0,269.525,0,269.525
+              		c0,12.871,10.434,23.306,23.306,23.306h167.145c12.87,0,23.305-10.435,23.305-23.306c0,0,0-249.285,0-269.525
+              		C362.878,153.697,287.88,128.698,287.88,104.895z M319.716,406.493H192.284V280.432h127.432V406.493z"/>
+              	<path class="st0" d="M225.57,25.383h60.572c3.676,0,6.662-2.978,6.662-6.662V6.653c0-3.676-2.986-6.653-6.662-6.653H225.57
+              		c-3.677,0-6.654,2.978-6.654,6.653v12.068C218.916,22.405,221.893,25.383,225.57,25.383z"/>
+              </g>
+            </svg>
+            {{ settings.announce_2 }}
+          </p>
+          {% # render 'social-icons', additional_classes: 'inline-list toolbar__social' %}
+        </div>
+      {%- endif -%}
+      {% if settings.app_img %}
+        <a class="custom_app_link" href="{{ settings.app_url }}">
+          {{- settings.app_img | image_url: width: settings.app_img.width | image_tag -}}
+        </a>
+      {% endif %}
+      {%- if section.settings.toolbar_menu != blank -%}
+        <div class="toolbar__item small--hide toolbar__item--menu">
+          <ul class="inline-list toolbar__menu">
+            {%- for link in toolbar_menu.links -%}
+              <li>
+                <a href="{{ link.url }}">{{ link.title }}</a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+      <p class="content__announce">
+        {{ settings.announce_main }}
+      </p>
+      <div class="toolbar__item small--hide">
+        <div>
+          <p class="announce___text">
+            <svg
+              fill="#fff"
+              width="800px"
+              height="800px"
+              viewBox="0 0 36 36"
+              version="1.1"
+              preserveAspectRatio="xMidYMid meet"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <title>truck-line</title>
+              <path class="clr-i-outline clr-i-outline-path-1" d="M30,12H26V7a1,1,0,0,0-1-1H3A1,1,0,0,0,2,7V25a1,1,0,0,0,1,1H4V8H24V19.7a6.45,6.45,0,0,1,1.56-.2c.15,0,.29,0,.44,0V14h4a2,2,0,0,1,2,2v1H28v2h4v5H29.6a4.54,4.54,0,0,0-8.34,0H14.43a4.5,4.5,0,0,0-4.17-2.76A4.38,4.38,0,1,0,14.72,26H21a4.49,4.49,0,0,0,8.92,0H33a1,1,0,0,0,1-1V16A4,4,0,0,0,30,12ZM10.26,28a2.38,2.38,0,1,1,0-4.75,2.38,2.38,0,1,1,0,4.75Zm15.17,0a2.38,2.38,0,1,1,2.5-2.37A2.44,2.44,0,0,1,25.43,28Z"></path>
+              <rect x="0" y="0" width="36" height="36" fill-opacity="0"/>
+            </svg>
+            {{ settings.announce_3 }}
+          </p>
+        </div>
+        <div>
+          <p class="announce___text">
+            <svg
+              version="1.1"
+              id="Capa_1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              x="0px"
+              y="0px"
+              viewBox="0 0 240.608 240.608"
+              style="enable-background:new 0 0 240.608 240.608;"
+              xml:space="preserve"
+            >
+              <path style="fill:#fff;" d="M208.789,29.972l31.819,31.82L91.763,210.637L0,118.876l31.819-31.82l59.944,59.942L208.789,29.972z"
+              	/>
+            </svg>
+            {{ settings.announce_4 }}
+          </p>
+        </div>
+      </div>
+
+      {% comment %}
+        {% # - if show_selectors -%}
+        <div class="toolbar__item small--hide">
+            {%-render 'multi-selectors',
+              locale_selector: locale_selector,
+              currency_selector: currency_selector,
+              show_currency_flags: section.settings.show_currency_flags,
+              location: 'toolbar'
+            -%}
+        </div>
+        {%- # endif -%}
+      {% endcomment %}
+    </div>
+    <!--
+      mobile View            .........
+      ..............
+    -->
+
+    <div class="toolbar__content mobile_only">
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <p class="content__announce">
+              {{ settings.announce_main }}
+            </p>
+          </div>
+          <div class="swiper-slide">
+            <div class="wrapper__ti">
+              {%- if section.settings.toolbar_social -%}
+                <div class="toolbar__item ">
+                  <p class="announce___text">
+                    <svg
+                      fill="#fff"
+                      width="800px"
+                      height="800px"
+                      viewBox="0 0 24 24"
+                      id="star"
+                      data-name="Line Color"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="icon line-color"
+                    >
+                      <polygon id="primary" points="12 4 9.22 9.27 3 10.11 7.5 14.21 6.44 20 12 17.27 17.56 20 16.5 14.21 21 10.11 14.78 9.27 12 4" style="fill: none; stroke: #fff; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polygon>
+                    </svg>
+                    <!-- 4.9 / 5.0 Top Rating -->
+                    {{ settings.announce_1 }}
+                  </p>
+                  <p class="announce___text">
+                    <svg
+                      height="800px"
+                      width="800px"
+                      version="1.1"
+                      id="_x32_"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      viewBox="0 0 512 512"
+                      xml:space="preserve"
+                    >
+                      <style type="text/css">
+                      	.st0{fill:#fff;}
+                      </style>
+                      <g>
+                      	<path class="st0" d="M287.88,104.895v-70.23h-63.768v70.23c0,23.803-74.99,48.802-74.99,114.274c0,20.24,0,269.525,0,269.525
+                      		c0,12.871,10.434,23.306,23.306,23.306h167.145c12.87,0,23.305-10.435,23.305-23.306c0,0,0-249.285,0-269.525
+                      		C362.878,153.697,287.88,128.698,287.88,104.895z M319.716,406.493H192.284V280.432h127.432V406.493z"/>
+                      	<path class="st0" d="M225.57,25.383h60.572c3.676,0,6.662-2.978,6.662-6.662V6.653c0-3.676-2.986-6.653-6.662-6.653H225.57
+                      		c-3.677,0-6.654,2.978-6.654,6.653v12.068C218.916,22.405,221.893,25.383,225.57,25.383z"/>
+                      </g>
+                    </svg>
+                    {{ settings.announce_2 }}
+                  </p>
+                  {% # render 'social-icons', additional_classes: 'inline-list toolbar__social' %}
+                </div>
+              {%- endif -%}
+              {% if settings.app_img %}
+                <a class="custom_app_link" href="{{ settings.app_url }}">
+                  {{- settings.app_img | image_url: width: settings.app_img.width | image_tag -}}
+                </a>
+              {% endif %}
+              {%- if section.settings.toolbar_menu != blank -%}
+                <div class="toolbar__item  toolbar__item--menu">
+                  <ul class="inline-list toolbar__menu">
+                    {%- for link in toolbar_menu.links -%}
+                      <li>
+                        <a href="{{ link.url }}">{{ link.title }}</a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              {%- endif -%}
+              <div class="toolbar__item ">
+                <div>
+                  <p class="announce___text">
+                    <svg
+                      fill="#fff"
+                      width="800px"
+                      height="800px"
+                      viewBox="0 0 36 36"
+                      version="1.1"
+                      preserveAspectRatio="xMidYMid meet"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                    >
+                      <title>truck-line</title>
+                      <path class="clr-i-outline clr-i-outline-path-1" d="M30,12H26V7a1,1,0,0,0-1-1H3A1,1,0,0,0,2,7V25a1,1,0,0,0,1,1H4V8H24V19.7a6.45,6.45,0,0,1,1.56-.2c.15,0,.29,0,.44,0V14h4a2,2,0,0,1,2,2v1H28v2h4v5H29.6a4.54,4.54,0,0,0-8.34,0H14.43a4.5,4.5,0,0,0-4.17-2.76A4.38,4.38,0,1,0,14.72,26H21a4.49,4.49,0,0,0,8.92,0H33a1,1,0,0,0,1-1V16A4,4,0,0,0,30,12ZM10.26,28a2.38,2.38,0,1,1,0-4.75,2.38,2.38,0,1,1,0,4.75Zm15.17,0a2.38,2.38,0,1,1,2.5-2.37A2.44,2.44,0,0,1,25.43,28Z"></path>
+                      <rect x="0" y="0" width="36" height="36" fill-opacity="0"/>
+                    </svg>
+                    {{ settings.announce_3 }}
+                  </p>
+                </div>
+                <div>
+                  <p class="announce___text">
+                    <svg
+                      version="1.1"
+                      id="Capa_1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      x="0px"
+                      y="0px"
+                      viewBox="0 0 240.608 240.608"
+                      style="enable-background:new 0 0 240.608 240.608;"
+                      xml:space="preserve"
+                    >
+                      <path style="fill:#fff;" d="M208.789,29.972l31.819,31.82L91.763,210.637L0,118.876l31.819-31.82l59.944,59.942L208.789,29.972z"
+                      	/>
+                    </svg>
+                    {{ settings.announce_4 }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    new Swiper(".toolbar__content.mobile_only .swiper", {
+      slidesPerView: 1,
+      loop: true,
+      autoHeight: true,
+      autoHeight: true,
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false
+      }
+      // effect: "fade"
+    });
+  });
+</script>

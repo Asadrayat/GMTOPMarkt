@@ -1,0 +1,95 @@
+{% schema %}
+{
+  "name": "TikTok Video Grid",
+  "tag": "section",
+  "class": "tiktok-section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "TikTok Video",
+      "settings": [
+        {
+          "type": "url",
+          "id": "video_url",
+          "label": "TikTok Video Embed URL"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "CTA Link (optional)",
+          "default": "/collections/all"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "TikTok Video Grid",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+.tiktok-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+.tiktok-video {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+.tiktok-video iframe {
+  width: 100%;
+  aspect-ratio: 9/16;
+  border: none;
+  border-radius: 12px;
+}
+.hover-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.tiktok-video:hover .hover-overlay {
+  opacity: 1;
+}
+.cta-button {
+  padding: 10px 20px;
+  background-color: #fff;
+  color: #000;
+  text-decoration: none;
+  border-radius: 25px;
+  font-weight: bold;
+}
+{% endstylesheet %}
+
+<section class="tiktok-section">
+  <div class="page-width">
+    <div class="section-header">
+      <h2>As Seen on TikTok</h2>
+      <p>Real moments from our community.</p>
+    </div>
+    <div class="tiktok-grid">
+      {% for block in section.blocks %}
+        <div class="tiktok-video">
+          <iframe src="{{ block.settings.video_url }}" allowfullscreen></iframe>
+          {% if block.settings.cta_link %}
+          <div class="hover-overlay">
+            <a href="{{ block.settings.cta_link }}" class="cta-button">Shop This Look</a>
+          </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

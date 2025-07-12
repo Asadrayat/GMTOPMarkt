@@ -1,0 +1,172 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+  #shopify-section-{{id}} {
+    box-sizing: border-box;
+    margin-top: {{section.settings.margin_top | append: 'px'}};
+    margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+    padding-top: {{section.settings.padding_top | append: 'px'}};
+    padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+  }
+
+  @media(max-width: 600px) {
+    #shopify-section-{{id}} {
+      margin-top: {{section.settings.margin_top_m | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+      padding-top: {{section.settings.padding_top_m | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+    }
+  }
+</style>
+
+<div class="sec-{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="wrapper-{{ id }}">
+      <div class="widget-title not-before  no-des">
+        <h3 class="box-title  --section-title">
+          <span class="title">
+            <span>
+              {%- assign lang = request.path | slice: 1, 2 %}
+              {% if lang == 'el' %} Καταστήματα {% elsif lang == 'en' %} Locations {% else %} Standorte {% endif -%}
+            </span>
+          </span>
+        </h3>
+      </div>
+      <div class="store-locations" style="display:flex">
+        <div class="store-location" style="width:50%;padding:8px">
+          <img
+            style="width: 100%"
+            data-src="https://cdn.shopify.com/s/files/1/0612/6433/0972/files/1.jpg?v=1733997940"
+            class="lazyload"
+          >
+        </div>
+
+        <div class="store-location" style="width:50%;padding:8px">
+          <img
+            style="width: 100%"
+            data-src="https://cdn.shopify.com/s/files/1/0612/6433/0972/files/2.jpg?v=1733997941"
+            class="lazyload"
+          >
+        </div>
+      </div>
+      <div class="store-location-text">
+        <i class="fa fa-map-marker"></i>
+        <h3 class="text-center">Phillipsring 7, 55252 Mainz Kastel</h3>
+      </div>
+      <p class="text-center">
+        “Wenn Sie Zeit haben, besuchen Sie uns in unseren Geschäften und genießen unser Sortiment. Falls nicht, können
+        Sie bequem online bestellen!”
+      </p>
+      <div class="widget_container"></div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Review",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Review"
+    }
+  ]
+}
+{% endschema %}

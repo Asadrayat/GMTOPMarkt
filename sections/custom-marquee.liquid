@@ -1,0 +1,246 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+  #shopify-section-{{id}} {
+    box-sizing: border-box;
+    margin-top: {{section.settings.margin_top | append: 'px'}};
+    margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+    padding-top: {{section.settings.padding_top | append: 'px'}};
+    padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+    overflow: hidden;
+  }
+
+  @media(max-width: 768px) {
+    #shopify-section-{{id}} {
+      margin-top: {{section.settings.margin_top_m | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+      padding-top: {{section.settings.padding_top_m | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+    }
+  }
+  .wrapper-{{ id }} .swiper{
+    /* overflow: visible; */
+  }
+  .wrapper-{{ id }} .swiper-wrapper {
+    transition-timing-function: linear !important;
+    transform: translate3d(0, 0, 0);
+  }
+  .wrapper-{{ id }} .swiper-slide{
+    width: max-content;
+  }
+  .marquee__item{
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+  .marquee__item img{
+    height: 70px;
+    width: auto;
+    object-fit: cover;
+  }
+  .marquee__item h4{
+    color: #FFF;
+    font-size: 28px;
+    line-height: 28px; /* 100% */
+    letter-spacing: -0.56px;
+    margin: 0;
+  }
+
+  @media screen and (max-width: 768px){
+    .marquee__item{
+      gap: 12px;
+    }
+    .marquee__item img{
+      height: 30px;
+    }
+    .marquee__item h4{
+      font-size: 16px;
+      line-height: 20px; /* 100% */
+      letter-spacing: -0.32px;
+    }
+  }
+</style>
+
+<div class="sec-{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <h2 class="--section-title">{{ section.settings.title }}</h2>
+    <div class="wrapper-{{ id }}">
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          {% for i in (1..20) %}
+            {% for block in section.blocks %}
+              <div class="swiper-slide">
+                <div class="marquee__item">
+                  {% if block.settings.image %}
+                    {{ block.settings.image | image_url: width: block.settings.image.width | image_tag }}
+                  {% endif %}
+                  {% if block.settings.title != blank %}
+                    <h4>{{ block.settings.title }}</h4>
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", (event) => {
+    new Swiper(".wrapper-{{ id }} .swiper", {
+      slidesPerView: 'auto',
+      spaceBetween: 24,
+      loop: true,
+      autoplay: {
+        delay: 0,
+        disableOnInteraction: true,
+      },
+      speed: 5000,
+      breakpoints: {
+        768: {
+          slidesPerView: 'auto',
+          spaceBetween: 35,
+        },
+        1024: {
+          slidesPerView: 'auto',
+          spaceBetween: 56,
+        },
+      },
+    })
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Marquee Items",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Our Brands"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marquee Items"
+    }
+  ]
+}
+{% endschema %}

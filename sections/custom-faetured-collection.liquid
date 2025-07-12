@@ -1,0 +1,370 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+    #shopify-section-{{id}} {
+      box-sizing: border-box;
+      margin-top: {{section.settings.margin_top | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+      padding-top: {{section.settings.padding_top | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+      background: {{ section.settings.bg_color }};
+    }
+
+    @media(max-width: 768px) {
+      #shopify-section-{{id}} {
+        margin-top: {{section.settings.margin_top_m | append: 'px'}};
+        margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+        padding-top: {{section.settings.padding_top_m | append: 'px'}};
+        padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+      }
+    }
+
+  .wrapper-{{ id }}{
+  .--top-block {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 40px;
+      @media(max-width: 600px){
+        grid-template-columns: minmax(0,1fr);
+        gap: var(--Spacing-Container-xs);
+        margin-bottom: 0px;
+      }
+  }
+    h2.--section-title {
+        letter-spacing: -0.4px;
+        margin-block: 0 var(--Spacing-Container-xxs);
+        background: {{ section.settings.tc }};
+          {% if  section.settings.subtitle == blank %}
+             margin-block: 0 var(--Spacing-Container-md);
+          {% endif %}
+    }
+  .--section-subtitle {
+      color: var(--Content-Base-main, #1F2937);
+      /* font-family: var(--font-family-Body, "Neue Plak"); */
+      font-size: var(--Font-Size-Paragraph-Medium);
+      line-height: var(--Line-Height-Paragraph-Medium);
+       margin-bottom: var(--Spacing-Container-sm);
+  }
+
+
+
+
+  .--button-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-top: 24px;
+      @media(max-width: 600px){
+        /* justify-content: flex-start; */
+      }
+  }
+  a.--button {
+    display: block;
+    color: #fff;
+    text-align: center;
+    font-size: var(--Font-Size-UI-Controls-Control-Button-Small);
+    line-height: var(--Line-Height-UI-Controls-Control-Button-Small);
+    text-transform: capitalize;
+    padding: 8px 15px;
+    background: rgb(0 91 211);
+    border-radius: 4px;
+    font-weight: 700;
+  }
+
+  /* Swiper Styling */
+  .--slider-wrapper{
+    position: relative;
+  }
+  .swiper:not(.swiper-initialized) .swiper-slide {
+      max-width: calc(var(--page-width)/4) !important;
+      margin-right: 16px;
+      overflow: hidden;
+  }
+
+  .--nav-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      background: rgb(0 91 211);
+      line-height: 1;
+      position: absolute;
+      top: 50%;
+      z-index: 1;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      transform: translateY(-50%);
+      box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.10), 0px 1px 3px 0px rgba(0, 0, 0, 0.10);
+      cursor: pointer;
+       path{
+        stroke: #fff;
+      }
+  }
+  .--nav-icon.swiper-button-disabled {
+      display: none;
+  }
+    .prev-{{ section.id }}.--nav-icon {
+      /* left: -20px; */
+      left: 0px;
+    }
+    .next-{{ section.id }}.--nav-icon {
+      /* right: -20px; */
+      right: 0px;
+    }
+  }
+</style>
+
+<div id="{{ section.settings.id_nav | downcase }}" class="sec-{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="wrapper-{{ id }}">
+      <div class="--top-block">
+        <div class="--text-content">
+          <h2 class="--section-title">{{ section.settings.title }}</h2>
+          <div class="--section-subtitle">{{ section.settings.subtitle }}</div>
+        </div>
+      </div>
+      <div class="--slider-wrapper swiper__container">
+        <div class="swiper swiper-{{ section.id }}">
+          <div class="swiper-wrapper">
+            {% for product in section.settings.collection.products %}
+              {% # render 'product-card-new-v1', product: product, forloop: forloop, class: 'swiper-slide' %}
+              <div class="swiper-slide">
+                {% render 'product-grid-item-v2', product: product %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% comment %}
+          <div class="prev-{{ section.id }} --nav-icon">
+            {% render 'all-icons', name: 'left_arrow' %}
+          </div>
+          <div class="next-{{ section.id }} --nav-icon">
+            {% render 'all-icons', name: 'right_arrow' %}
+          </div>
+        {% endcomment %}
+      </div>
+      <div class="--button-wrapper">
+        {% if section.settings.button_label != blank and section.settings.button_url != blank %}
+          <a class="--button" href="{{ section.settings.button_url }}"> {{ section.settings.button_label }} </a>
+        {% endif %}
+        {% if section.settings.secondary_button_label != blank and section.settings.secondary_button_url != blank %}
+          <a class="--button" href="{{ section.settings.secondary_button_url }}">
+            {{ section.settings.secondary_button_label }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    function fcinitSwiper(classname) {
+      if(classname){
+        new Swiper(classname, {
+          slidesPerView: 1.2,
+          spaceBetween: 2,
+          autoplay: true,
+          autoplay: {
+            delay:  2000,
+            disableOnInteraction: false,
+          },
+          navigation: {
+            nextEl: '.next-{{ section.id }}',
+            prevEl: '.prev-{{ section.id }}'
+          },
+          breakpoints: {
+            600: {
+              slidesPerView: 4.2,
+              spaceBetween: 2
+            }
+          }
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      fcinitSwiper(".swiper-{{ section.id }}");
+    });
+
+    // Optional: Add an event listener to handle window resize events
+    window.addEventListener('resize', function() {
+      fcinitSwiper(".swiper-{{ section.id }}"); // Re-initialize Swiper on window resize
+    });
+
+  })();
+function setEqualHeight(selector) {
+  const divs = document.querySelectorAll(selector);
+  const maxHeight = Math.max(...Array.from(divs, (div) => div.offsetHeight));
+  divs.forEach((div) => {
+    div.style.height = `${maxHeight}px`;
+  });
+}
+document.addEventListener("DOMContentLoaded", () => {
+  setEqualHeight(".grid-product__title.grid-product__title--heading");
+});
+</script>
+
+{% schema %}
+{
+  "name": "New Featured Collection",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color"
+    },
+    {
+      "type": "color",
+      "id": "tc",
+      "label": "Title Background Color"
+    },
+    {
+      "type": "text",
+      "id": "id_nav",
+      "label": "Id for Navigtion"
+    },
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Select Collection"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button Url"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "label": "Secondary Button Label"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_url",
+      "label": "Secondary Button Url"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 16
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "New Featured Collection"
+    }
+  ]
+}
+{% endschema %}

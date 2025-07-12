@@ -1,0 +1,298 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+  #shopify-section-{{id}} {
+    box-sizing: border-box;
+    margin-top: {{section.settings.margin_top | append: 'px'}};
+    margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+    padding-top: {{section.settings.padding_top | append: 'px'}};
+    padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+    background: {{ section.settings.Color }};
+    .content * {
+      font-size: 14px;
+      line-height: 120%;
+      color: #fff;
+      margin: 0;
+    }
+    .content ul {
+        padding: 0 24px;
+    }
+    .content li {
+      position: relative;
+      list-style: none;
+      padding: 0;
+      @media(max-width: 768px) {
+        /* list-style: unset; */
+      }
+    }
+    .content li::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        content: "";
+        background: url("https://cdn.shopify.com/s/files/1/0612/6433/0972/files/check-circle.svg?v=1750531732");
+        background-size: cover;
+        width: 16px;
+        height: 16px;
+        left: -24px;
+        filter: invert(1);
+      @media(max-width: 768px) {
+        /* content: unset; */
+      }
+    }
+  }
+  .wrapper-{{ id }}{
+    display: grid;
+    grid-template-columns: 1fr 6fr;
+    gap: 32px;
+    align-items: center;
+     @media(max-width: 768px) {
+       grid-template-columns: 1fr;
+       justify-items: center;
+     }
+   .content ul{
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      align-items: center;
+     @media(max-width: 1200px) {
+       grid-template-columns: 1fr 1fr;
+     }
+     @media(max-width: 768px) {
+       grid-template-columns: 1fr;
+     }
+   }
+  }
+  @media(max-width: 768px) {
+    #shopify-section-{{id}} {
+      margin-top: {{section.settings.margin_top_m | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+      padding-top: {{section.settings.padding_top_m | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+    }
+    .wrapper-{{ id }}.mobile_only .swiper{
+      max-width: 100%;
+      overflow: hidden;
+      ul {
+        min-height: 72px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: start;
+      }
+    }
+  }
+</style>
+
+<div class="sec-{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="wrapper-{{ id }} desktop_only">
+      {% if section.settings.img -%}
+        {{- section.settings.img | image_url: width: '120x' | image_tag: class: 'desktop_only' -}}
+      {%- endif %}
+      {% if section.settings.rte != blank %}
+        <div class="content">{{ section.settings.rte }}</div>
+      {% endif %}
+    </div>
+    <div class="wrapper-{{ id }} mobile_only">
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide content">
+            <ul>
+              <li>{{ section.settings.text_1 }}</li>
+              <li>{{ section.settings.text_2 }}</li>
+            </ul>
+          </div>
+          <div class="swiper-slide content">
+            <ul>
+              <li>{{ section.settings.text_3 }}</li>
+              <li>{{ section.settings.text_4 }}</li>
+            </ul>
+          </div>
+          <div class="swiper-slide content">
+            <ul>
+              <li>{{ section.settings.text_5 }}</li>
+              <li>{{ section.settings.text_6 }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    new Swiper(".wrapper-{{ id }}.mobile_only .swiper", {
+      slidesPerView: 1,
+      loop: true,
+      autoHeight: true,
+      autoHeight: true,
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false
+      }
+      // effect: "fade"
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Trust Sections",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "Color",
+      "label": "Background Color"
+    },
+    {
+      "type": "text",
+      "id": "text_1",
+      "label": "Text1",
+      "default": "Wir haben auch ein Ladengeschäft"
+    },
+    {
+      "type": "text",
+      "id": "text_2",
+      "label": "Text2",
+      "default": "Mehrere Zahlungsmöglichkeiten"
+    },
+    {
+      "type": "text",
+      "id": "text_3",
+      "label": "Text3",
+      "default": "Kostenloser Versand ab 120 € für Trockenprodukte"
+    },
+    {
+      "type": "text",
+      "id": "text_4",
+      "label": "Text4",
+      "default": "Mehr als 1.000 Produkte"
+    },
+    {
+      "type": "text",
+      "id": "text_5",
+      "label": "Text5",
+      "default": "Über 15 Jahre Erfahrung im Supermarktsektor"
+    },
+    {
+      "type": "text",
+      "id": "text_6",
+      "label": "Text6",
+      "default": "Direktimport aus Griechenland"
+    },
+    {
+      "type": "richtext",
+      "id": "rte",
+      "label": "Richtext"
+    },
+    {
+      "type": "image_picker",
+      "id": "img",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 32
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Sections"
+    }
+  ]
+}
+{% endschema %}

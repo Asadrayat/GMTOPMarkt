@@ -1,0 +1,118 @@
+<style>
+  .section-{{ section.id }} {
+    iframe {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      aspect-ratio: 2/1;          
+    }    
+    .hp-vid-container {
+      .swiper {
+        max-width: 100%;
+        overflow: hidden;     
+        padding: 1px;
+      }
+      video {
+        width: 100%;
+        height: auto;
+      }
+      .hp-vid-elem {
+        border: 1px solid #c6e2ff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        border: 1px solid #c6e2ff;
+        border-radius: 16px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        padding: 8px;
+        background-color: white;
+        transition: all 0.3s ease;     
+        box-sizing: border-box;
+        line-height: 0;
+        @media(max-width: 768px) {
+        }        
+      }
+
+    }  
+    @media(min-width: 768px) {
+
+    } 
+  }
+</style>
+
+<div class="section-{{ section.id }} page-width">
+   <div class="widget-title not-before  no-des">
+      <h3 class="box-title">
+         <h2 class="--section-title"> 
+         {{ section.settings.title }}
+         </h2>
+      </h3>
+   </div>
+   <div class="hp-vid-container ">
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            <div class="block swiper-slide ">
+            <div class="hp-vid-elem">
+              {% if block.settings.video %}
+                {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: true }}
+              {% endif %}
+            </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+   </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    new Swiper(".hp-vid-container .swiper", {
+      slidesPerView: 1.2,
+      spaceBetween: 16,
+      loop: true,
+      autoHeight: true,
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false
+      },
+      breakpoints: {
+        768: {
+          slidesPerView: 3,
+          spaceBetween: 16, 
+        }
+      }
+      // effect: "fade"
+    });
+  });
+</script>
+
+{% schema %}
+{
+ "name" : "Custom Youtube",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Videos"
+    },
+  ],
+  "blocks": [
+    {
+      "type": "block",
+      "name": "Block",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video"
+        },
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Youtube"
+    }
+  ]
+}
+{% endschema %}

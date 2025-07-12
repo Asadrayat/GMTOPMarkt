@@ -1,0 +1,40 @@
+{%- if block.settings.logo -%}
+  {%- style -%}
+    .footer__logo a {
+      height: {{ block.settings.desktop_logo_height }}px;
+    }
+  {%- endstyle -%}
+  <div class="footer__logo">
+    <a href="{{ routes.root_url }}">
+      {%- assign width = block.settings.desktop_logo_height | times: block.settings.logo.aspect_ratio | times: 2 -%}
+      {%- assign height = block.settings.desktop_logo_height -%}
+      {%- capture sizes -%}{{ block.settings.desktop_logo_height | times: block.settings.logo.aspect_ratio }}px{%- endcapture -%}
+      {%- capture widths -%}{{ block.settings.desktop_logo_height | times: block.settings.logo.aspect_ratio }}, {{ block.settings.desktop_logo_height | times: block.settings.logo.aspect_ratio | times: 2 }}{%- endcapture -%}
+      {%- capture style -%}max-width: {{ block.settings.desktop_logo_height | times: block.settings.logo.aspect_ratio }}px;max-height: {{ block.settings.desktop_logo_height }}px;{%- endcapture -%}
+      <div class="logo_img">
+        {%-
+          render 'image-element',
+          img: block.settings.logo,
+          img_width: width,
+          img_height: height,
+          sizes: sizes,
+          widths: widths,
+          style: style,
+          alt: block.settings.logo.alt | default: shop.name,
+        -%}
+      </div>
+    </a>
+    <div class="imae__wrapp-custom">
+      {% if block.settings.img1 -%}
+        {{- block.settings.img1 | image_url: width: block.settings.img1.width | image_tag -}}
+      {%- endif %}
+      {% if block.settings.img2 -%}
+        {{- block.settings.img2 | image_url: width: block.settings.img2.width | image_tag -}}
+      {%- endif %}
+      {% if block.settings.img3 -%}
+        {{- block.settings.img3 | image_url: width: block.settings.img3.width | image_tag -}}
+      {%- endif %}
+    </div>
+    <div class="imae__wrapp-custom hidden">{% render 'social-icons', additional_classes: 'inline-list toolbar__social' %}</div>
+  </div>
+{%- endif -%}
